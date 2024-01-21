@@ -35,6 +35,7 @@ int main()
 	std::thread t2(operators, std::ref(count_client));
 
     t1.join();
+    t2.join();
 
     return 0;
 }
