@@ -5,6 +5,8 @@ SqrShape::SqrShape(int _x[4], int _y[4])
 
     type = TypeShape::SQR;
 
+    count = 4;
+
     // заполн¤ем координаты фигуры
     for (size_t i = 0; i < 3; i++)
     {

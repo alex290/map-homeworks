@@ -5,6 +5,8 @@ CubeShape::CubeShape(int _x[7], int _y[7], int _z[7])
     type = TypeShape::CUBE;
     // заполн¤ем координаты фигуры
 
+    count = 7;
+
     for (size_t i = 0; i < 7; i++)
     {
         x[i] = _x[i];

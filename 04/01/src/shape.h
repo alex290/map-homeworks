@@ -27,4 +27,14 @@ public:
     double square{0};
     double height{0};
     double radius{0};
+
+    // Transform
+    virtual void shift(int m, int n, int k);
+    virtual void scaleX(int a);
+    virtual void scaleY(int d);
+    virtual void scaleZ(int e);
+    virtual void scale(int s);
+
+protected:
+    int count{7};
 };

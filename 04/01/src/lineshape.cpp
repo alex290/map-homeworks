@@ -3,6 +3,7 @@
 LineShape::LineShape(int _x[2], int _y[2])
 {
     type = TypeShape::LINE;
+    count = 2;
 
     // заполн¤ем координаты фигуры
     x[0] = _x[0];

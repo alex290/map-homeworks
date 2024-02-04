@@ -4,6 +4,8 @@ CylinderShape::CylinderShape(int _x, int _y, double R, double H)
 {
     type = TypeShape::CYLINDER;
 
+    count = 1;
+
     // заполн¤ем координаты фигуры
     x[0] = _x;
     y[0] = _y;
