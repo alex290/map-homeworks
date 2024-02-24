@@ -8,17 +8,32 @@
 template <typename It, typename Fn>
 void parallel_for_each(It begin, It end, Fn &&function)
 {
-    const auto diff = std::distance(begin, end);
+    const size_t block_size = 4;
+    size_t diff = static_cast<size_t>(std::distance(begin, end));
+    // std::cout << "diff: " << diff << std::endl;
     std::future<void> q;
-    constexpr auto num_threads = 8;
-    if (begin != end)
+    if (diff > 0)
     {
-        function(*begin);
-        begin++;
-        q = std::async(std::launch::async, [begin, end, function]
-                       { parallel_for_each(begin, end, function); });
-        q.wait();
+        size_t size = block_size;
+        if (block_size > diff)
+        {
+            size = diff;
+        }
+        
+        for (size_t i = 0; i < size; i++)
+        {
+            function(*begin);
+            begin++;
+        }
+
+        if (diff > block_size)
+        {
+            q = std::async(std::launch::async, [begin, end, function]
+                           { parallel_for_each(begin, end, function); });
+            q.wait();
+        }
     }
+
 }
 
 int main()
