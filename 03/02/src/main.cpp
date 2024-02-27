@@ -15,26 +15,19 @@ void parallel_for_each(It begin, It end, Fn &&function)
     if (diff > 0)
     {
         size_t size = diff;
-
-        // Если размер превышает размер то дели на 2
+        
         if (diff > block_size)
         {
             size = size / 2;
-        }
-
-
-        for (size_t i = 0; i < size; i++)
-        {
-            function(*begin);
-            begin++;
-        }
-
-        if (diff > block_size)
-        {
-            q = std::async(std::launch::async, [begin, end, function]
-                           { parallel_for_each(begin, end, function); });
+            It endAs = begin + size;
+            q = std::async(std::launch::async, [begin, endAs, function]
+                           { parallel_for_each(begin, endAs, function); });
             q.wait();
         }
+        
+        std::for_each(begin + (diff - size), end, function);
+
+
     }
 }
 
