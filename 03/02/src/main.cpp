@@ -14,12 +14,15 @@ void parallel_for_each(It begin, It end, Fn &&function)
     std::future<void> q;
     if (diff > 0)
     {
-        size_t size = block_size;
-        if (block_size > diff)
+        size_t size = diff;
+
+        // Если размер превышает размер то дели на 2
+        if (diff > block_size)
         {
-            size = diff;
+            size = size / 2;
         }
-        
+
+
         for (size_t i = 0; i < size; i++)
         {
             function(*begin);
@@ -33,7 +36,6 @@ void parallel_for_each(It begin, It end, Fn &&function)
             q.wait();
         }
     }
-
 }
 
 int main()
@@ -43,5 +45,6 @@ int main()
     auto print = [](const int &n)
     { std::cout << n << ", "; };
     parallel_for_each(numb.begin(), numb.end(), print);
+    std::cout << std::endl;
     return 0;
 }
