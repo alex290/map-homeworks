@@ -11,23 +11,25 @@ void parallel_for_each(It begin, It end, Fn &&function)
     const size_t block_size = 4;
     size_t diff = static_cast<size_t>(std::distance(begin, end));
     // std::cout << "diff: " << diff << std::endl;
-    std::future<void> q;
+
     if (diff > 0)
     {
         size_t size = diff;
-        
+
         if (diff > block_size)
         {
             size = size / 2;
             It endAs = begin + size;
-            q = std::async(std::launch::async, [begin, endAs, function]
-                           { parallel_for_each(begin, endAs, function); });
+            std::future<void> q = std::async(std::launch::async, [begin, endAs, function, &m]
+                                             { parallel_for_each(begin, endAs, function); });
+
             q.wait();
+            parallel_for_each(endAs, end, function);
         }
-        
-        std::for_each(begin + (diff - size), end, function);
-
-
+        else
+        {
+            std::for_each(begin, end, function);
+        }
     }
 }
 
