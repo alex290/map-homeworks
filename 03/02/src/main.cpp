@@ -20,7 +20,7 @@ void parallel_for_each(It begin, It end, Fn &&function)
         {
             size = size / 2;
             It endAs = begin + size;
-            std::future<void> q = std::async(std::launch::async, [begin, endAs, function, &m]
+            std::future<void> q = std::async(std::launch::async, [begin, endAs, function]
                                              { parallel_for_each(begin, endAs, function); });
 
             q.wait();
